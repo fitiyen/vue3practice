@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app">
+        ref: {{text}}
+        <input type="text" v-model="text"/>
+        <br/>
+        reactive: {{person}}
+        <br/>
+        {{num}} <input type="number" v-model.number="num" /> {{doubleNum}}
+    </div>
+
+    <!--單一模組載入方式 一定要加type=module -->
+    <!-- 結論 
+        1. 定義變數一定要用 const
+        2. 使用 ref 比較不會出錯
+    -->
+    <script type="module">
+        import { createApp, ref, reactive, onMounted, computed } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.1.4/vue.esm-browser.min.js'
+
+        const app = createApp({
+            setup(){
+
+                //Reactive 
+                //#1 限制只能使用物件 
+                //#2 覆蓋後會出現不可預期的錯誤
+                // const person = reactive('fiti') //不行寫入 string 型別
+                const person = reactive({
+                    name: 'fiti'
+                });
+                onMounted(() => {
+                    /* 會將 reactive 產生 proxy 物件變成純物件，就失去雙向綁定的功能了 (前提是使用 var 定義變數，const 本就不允許修改物件本身)
+                    person = {
+                        name : '小明'
+                    }
+                    */
+                   person.name = '小明'
+                })
+
+                const text = ref('fiti is good');
+                const person2 = ref({
+                    name: 'fiti2'
+                });
+                
+
+                function getText(){
+                    //ref 的 value 裡面才是 proxy 物件
+                    console.log(text.value);
+                    console.log(person2.value.name);// 才會顯示 fiti2
+                }
+
+                onMounted(() =>{
+                    getText();
+                    person2.value.name = '小明'
+                })
+
+                const num = ref(2);
+                const doubleNum = computed(()=>{
+                    return num.value * 2;
+                })
+
+                return {
+                    text,
+                    person,
+                    num,
+                    doubleNum
+                }
+            }
+        });
+
+        app.mount('#app');
+
+    </script>
+    
+</body>
+</html>

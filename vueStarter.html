@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://unpkg.com/vue@next"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+</head>
+<body>
+    <div id="app">
+        {{ text }}
+        {{ name }}
+        {{ num }}
+
+        <input type="number" v-model="num">
+        <hr>
+        {{person.name}}
+        <!--html 屬性綁定 v-bind:屬性名 簡寫 :屬性名-->
+        <img :src="person.image" :alt='person.name'/>
+
+        <i class="bi bi-gender-female" v-if="person.gender === 'female'"></i>
+        <i class="bi bi-gender-male" v-else></i>
+        
+        <hr>
+        <ul>
+            <li v-for="item in people">
+                <img :src="item.image" :alt='item.name' width='100'/>
+                {{item.name}}
+                <i class="bi bi-gender-female" v-if="item.gender === 'female'"></i>
+                <i class="bi bi-gender-male" v-else></i>
+
+                {{ item.cash }}
+                <!--事件綁定 v-on:事件 簡寫 @事件-->
+                <button type="button" @click="cashPlus(item, 100)">
+                    增加
+                </button>
+            </li>
+        </ul>
+    </div>
+    <!--整包 Vuejs 載入方法-->
+    <script>
+        Vue.createApp({
+            // data 函式
+            data : function(){
+                return {
+                    text : 'this is fiti.',
+                    name : 'nickname',
+                    num : 0,
+                    person : {
+                        name : 'fiti',
+                        image: 'https://stickershop.line-scdn.net/stickershop/v1/product/1142902/LINEStorePC/main.png;compress=true',
+                        cash: 1000,
+                        gender: 'male'
+                    },
+                    people :[
+                    {
+                        name : '小明',
+                        image: 'https://stickershop.line-scdn.net/stickershop/v1/product/1142902/LINEStorePC/main.png;compress=true',
+                        cash: 1000,
+                        gender: 'male'
+                    },
+                    {
+                        name : '漂亮阿姨',
+                        image: 'https://truth.bahamut.com.tw/s01/201707/084e594e95693c245fe2f28e22bd19b9.JPG',
+                        cash: 5000,
+                        gender: 'female'
+                    },
+                    {
+                        name : 'fiti',
+                        image: 'https://1.share.photo.xuite.net/cherryko04091/11ed149/19806899/1120338326_x.jpg',
+                        cash: 100000,
+                        gender: 'female'
+                    }
+                    ]
+                }
+            },
+            // methods 物件
+            methods : {
+                cashPlus(item, num){
+                    item.cash+=num;
+                }
+
+            },
+            // mounted 函式, created 函式
+            //只會做一次，適合初始化資料
+            //運行階段 vue 會將 data, methods 裡面屬性及參數打平到第一層(this下)
+            mounted : function(){
+                console.log(this.name);
+                console.log(this.person.image);
+                this.name = '我是小明';
+                //Ajax 取得的資料放在這邊
+            },
+        }).mount('#app')
+    </script>
+</body>
+</html>

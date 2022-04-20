@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" />
+  <style>
+    html,
+    body {
+      height: 100%;
+      font-family:Comic Sans MS;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app" class="h-100 d-flex align-items-center">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-6">
+          <div class="row">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="w-100 border border-secondary ">
+                  <h2 class="text-end">{{result}}</h2>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="btn-group w-100 ">
+                  <span class="border border-secondary w-75"></span>
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="clear()">
+                    <i class="bi bi-backspace w-25"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="btn-group w-100 ">
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('7')">
+                    7
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('8')">
+                    8
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('9')">
+                    9
+                  </button>
+                  
+                <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('/')">
+                  <i class="bi bi-percent w-25"></i>
+                </button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="btn-group w-100 ">
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('4')">
+                    4
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('5')">
+                    5
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('6')">
+                    6
+                  </button>
+                  
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('*')">
+                    <i class="bi bi-x w-25"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="btn-group w-100 ">
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('1')">
+                    1
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('2')">
+                    2
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('3')">
+                    3
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('-')">
+                    <i class="bi bi-dash w-25"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="btn-group w-100 ">
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('0')">
+                    0
+                  </button>
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('.')">
+                    <i class="bi bi-dot w-25"></i>
+                  </button>
+                  <button type="button" class="btn btn-success w-25" @click="calculate()">
+                    =
+                  </button>
+                  
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('+')">
+                    <i class="bi bi-plus w-25"></i>
+                  </button>
+              </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <div class="col-3">
+          <h5>History</h5>
+          <ul>
+            <li v-for="item in history" :key="item.index">
+              {{item}}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+<script src="https://unpkg.com/vue@next"></script>
+<script>
+  Vue.createApp(
+    {
+      data() {
+        return {
+          pressBtnList: [],
+          history: [],
+          result: 0,
+          symbols: ["+","-","*","/"]
+        }
+      },
+      methods: {
+        pressBtn(btn){
+          //檢查最後一個值是否為運算元
+          var char = this.pressBtnList.pop();
+          if (this.symbols.indexOf(char) < 0 || this.symbols.indexOf(btn) < 0){
+            this.pressBtnList.push(char);
+          }
+          this.pressBtnList.push(btn);
+          this.result = this.pressBtnList.join('');
+          
+        },
+        calculate() {
+          var formula = this.pressBtnList.join('');
+          var result = eval(formula);
+          this.result = result;
+          this.history.push(`${formula} = ${this.result}`);
+          if (this.history.length > 10) {
+            this.history.shift();
+          }
+          this.pressBtnList.length = 0;
+          localStorage.setItem("history", JSON.stringify(this.history));
+        },
+        clear() {
+          this.pressBtnList.length = 0;
+          this.result = 0;
+        }
+      },
+      mounted() {
+        this.history = JSON.parse(localStorage.getItem("history")) || [];
+      }
+    }
+  ).mount("#app")
+</script>
+
+</html>
