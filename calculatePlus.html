@@ -13,7 +13,7 @@
     html,
     body {
       height: 100%;
-      font-family:Comic Sans MS;
+      font-family: Comic Sans MS;
     }
   </style>
 </head>
@@ -53,10 +53,10 @@
                   <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('9')">
                     9
                   </button>
-                  
-                <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('/')">
-                  <i class="bi bi-percent w-25"></i>
-                </button>
+
+                  <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('/')">
+                    <i class="bi bi-percent w-25"></i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -72,7 +72,7 @@
                   <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('6')">
                     6
                   </button>
-                  
+
                   <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('*')">
                     <i class="bi bi-x w-25"></i>
                   </button>
@@ -109,15 +109,15 @@
                   <button type="button" class="btn btn-success w-25" @click="calculate()">
                     =
                   </button>
-                  
+
                   <button type="button" class="btn btn-outline-secondary w-25" @click="pressBtn('+')">
                     <i class="bi bi-plus w-25"></i>
                   </button>
-              </div>
+                </div>
               </div>
             </div>
           </div>
-          
+
         </div>
         <div class="col-3">
           <h5>History</h5>
@@ -141,19 +141,19 @@
           pressBtnList: [],
           history: [],
           result: 0,
-          symbols: ["+","-","*","/"]
+          symbols: ["+", "-", "*", "/"]
         }
       },
       methods: {
-        pressBtn(btn){
+        pressBtn(btn) {
           //檢查最後一個值是否為運算元
           var char = this.pressBtnList.pop();
-          if (this.symbols.indexOf(char) < 0 || this.symbols.indexOf(btn) < 0){
+          if (this.symbols.indexOf(char) < 0 || this.symbols.indexOf(btn) < 0) {
             this.pressBtnList.push(char);
           }
           this.pressBtnList.push(btn);
           this.result = this.pressBtnList.join('');
-          
+
         },
         calculate() {
           var formula = this.pressBtnList.join('');

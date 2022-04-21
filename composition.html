@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div id="app">
         ref: {{text}}
-        <input type="text" v-model="text"/>
-        <br/>
+        <input type="text" v-model="text" />
+        <br />
         reactive: {{person}}
-        <br/>
+        <br />
         {{num}} <input type="number" v-model.number="num" /> {{doubleNum}}
     </div>
 
@@ -25,7 +27,7 @@
         import { createApp, ref, reactive, onMounted, computed } from 'https://cdnjs.cloudflare.com/ajax/libs/vue/3.1.4/vue.esm-browser.min.js'
 
         const app = createApp({
-            setup(){
+            setup() {
 
                 //Reactive 
                 //#1 限制只能使用物件 
@@ -40,28 +42,28 @@
                         name : '小明'
                     }
                     */
-                   person.name = '小明'
+                    person.name = '小明'
                 })
 
                 const text = ref('fiti is good');
                 const person2 = ref({
                     name: 'fiti2'
                 });
-                
 
-                function getText(){
+
+                function getText() {
                     //ref 的 value 裡面才是 proxy 物件
                     console.log(text.value);
                     console.log(person2.value.name);// 才會顯示 fiti2
                 }
 
-                onMounted(() =>{
+                onMounted(() => {
                     getText();
                     person2.value.name = '小明'
                 })
 
                 const num = ref(2);
-                const doubleNum = computed(()=>{
+                const doubleNum = computed(() => {
                     return num.value * 2;
                 })
 
@@ -77,6 +79,7 @@
         app.mount('#app');
 
     </script>
-    
+
 </body>
+
 </html>
